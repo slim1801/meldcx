@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -35,7 +33,13 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-export default function Login({ onLogin }) {
+const ErrorMessage = styled.div`
+  color: red;
+  text-align: center;
+  padding: 1rem 0;
+`;
+
+export default function Login({ errorMessage, setErrorMessage, onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -43,23 +47,30 @@ export default function Login({ onLogin }) {
       <FormContainer>
         <Card style={{ width: "18rem", padding: "1rem 0" }}>
           <LoginHeader>Login</LoginHeader>
-          <Form>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          <Form onSubmit={() => onLogin({ email, password })}>
             <Input
               type="email"
               icon="envelope"
               value={email}
-              onChange={event => setEmail(event.target.value)}
+              onChange={event => {
+                errorMessage && setErrorMessage(null);
+                setEmail(event.target.value);
+              }}
               placeholder="Email Address"
             />
             <Input
               type="password"
               icon="unlock-alt"
               value={password}
-              onChange={event => setPassword(event.target.value)}
+              onChange={event => {
+                errorMessage && setErrorMessage(null);
+                setPassword(event.target.value);
+              }}
               placeholder="Password"
             />
             <ButtonContainer>
-              <Button variant="primary" onClick={onLogin}>
+              <Button variant="primary" type="submit">
                 LOG IN
               </Button>
             </ButtonContainer>
@@ -69,7 +80,3 @@ export default function Login({ onLogin }) {
     </LoginContainer>
   );
 }
-
-fetch(" http://35.201.2.209/.", { method: "GET" })
-  .then(res => res.json())
-  .then(res => console.log(res));

@@ -20,11 +20,11 @@ const InputControl = styled(Form.Control)`
   padding-left: 2.5rem;
 `;
 
-export default function Input({ placeholder, icon, type }) {
+export default function Input({ placeholder, icon, type, onChange }) {
   return (
     <InputContainer>
       <FontAwesomeIconContainer icon={icon} />
-      <InputControl type={type} placeholder={placeholder} />
+      <InputControl type={type} placeholder={placeholder} onChange={onChange} />
     </InputContainer>
   );
 }
