@@ -77,7 +77,10 @@ export default function DevicesScreen({ onLogout }) {
   const onNotify = async () => {
     const response = await fetch("http://35.201.2.209:8000/notify", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("access_token")}`
+      },
       body: JSON.stringify({
         name: "Sam Lim",
         email: "samuel.lim1801@gmail.com",
@@ -86,7 +89,7 @@ export default function DevicesScreen({ onLogout }) {
           "The past, the present and the future walked into a bar. It was tense"
       })
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
       console.log("NOTIFIED");
     } else {
       console.log("OH NO, SOMETHING WENT WRONG");
@@ -137,10 +140,3 @@ export default function DevicesScreen({ onLogout }) {
     </DevicesScreenContainer>
   );
 }
-fetch("http://35.201.2.209:8000/login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: "test@test.com", password: "meld123" })
-})
-  .then(res => res.text())
-  .then(res => console.log(res));
