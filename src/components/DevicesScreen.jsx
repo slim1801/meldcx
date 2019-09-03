@@ -27,12 +27,13 @@ const DevicesScreenFooter = styled.div`
 function rotate(props) {
   return keyframes`
     from {
-      transform: rotate(0deg) translate(${props.radius * props.multiplier}rem);
+      transform: rotate(${props.startRotation}deg) translate(${props.orbit}rem);
     }
   
     to {
-      transform: rotate(360deg) translate(${props.radius *
-        props.multiplier}rem);
+      transform: rotate(${props.startRotation + 360}deg) translate(${
+    props.orbit
+  }rem);
     }
   `;
 }
@@ -92,6 +93,21 @@ export default function DevicesScreen({ onLogout }) {
     }
   };
 
+  const rotatingCircles = devices.map((device, index) => {
+    const startRotation = (360 / devices.length) * index;
+    return (
+      <RotatingCircles
+        // Every time device updates, rerender these components
+        key={Math.random()
+          .toString(36)
+          .substring(7)}
+        radius={4}
+        orbit={12}
+        startRotation={startRotation}
+      />
+    );
+  });
+
   return (
     <DevicesScreenContainer>
       <DevicesScreenContent>
@@ -104,8 +120,7 @@ export default function DevicesScreen({ onLogout }) {
             <b>ONLINE</b>
           </div>
         </DeviceTextContainer>
-        <RotatingCircles radius={4} multiplier={3} />
-        <RotatingCircles radius={4} multiplier={-3} />
+        {rotatingCircles}
       </DevicesScreenContent>
       <DevicesScreenFooter>
         <Button
